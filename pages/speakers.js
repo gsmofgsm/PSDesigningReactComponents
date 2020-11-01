@@ -1,11 +1,17 @@
+import Footer from '../src/components/Footer/Footer';
+import Header from '../src/components/Header/Header';
+import Menu from '../src/components/Menu/Menu';
+import Speakers from '../src/components/Speakers/Speakers';
+import SpeakerSearchBar from '../src/components/SpeakerSearchBar/SpeakerSearchBar';
+
 function Page() {
     return (
         <div>
-            <img src="images/header.png" />
-            <img src="images/menu.gif" />
-            <img src="images/searchbar.gif" />
-            <img src="images/speakers.png" />
-            <img src="images/footer.png" />
+            <Header />
+            <Menu />
+            <SpeakerSearchBar />
+            <Speakers />
+            <Footer />
         </div>
     );
 }

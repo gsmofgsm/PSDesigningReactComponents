@@ -1,6 +1,19 @@
 import React from 'react';
 
-const Speakers = () => {
+const Speakers = ({speakers}) => {
+    return (
+        <div>
+            {speakers.map(({imageSrc, name}) => {
+                return <img src={`/images/${imageSrc}.png`}
+                    alt={name} key={imageSrc} />
+            })}
+        </div>
+    )
+};
+
+const EnhancedSpeakerComponent = withData(Speakers);
+
+function withData(Component) {
     const speakers = [
         {
             imageSrc: 'speaker-component-1124', name: 'Douglas Crockford'
@@ -12,14 +25,9 @@ const Speakers = () => {
             imageSrc: 'speaker-component-10803', name: 'Eugene Chuvyrov'
         },
     ]
-    return (
-        <div>
-            {speakers.map(({imageSrc, name}) => {
-                return <img src={`/images/${imageSrc}.png`}
-                    alt={name} key={imageSrc} />
-            })}
-        </div>
-    )
-};
+    return function() {
+        return <Component speakers={speakers}></Component>;
+    }
+}
 
-export default Speakers;
+export default EnhancedSpeakerComponent;

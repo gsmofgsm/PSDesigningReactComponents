@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { SpeakerContext } from '../../../pages/speakers';
+import SpeakerContext from './SpeakerContext';
 
 const Speakers = () => {
     const speakers = useContext(SpeakerContext);

@@ -4,8 +4,7 @@ import Header from '../src/components/Header/Header';
 import Menu from '../src/components/Menu/Menu';
 import Speakers from '../src/components/Speakers/Speakers';
 import SpeakerSearchBar from '../src/components/SpeakerSearchBar/SpeakerSearchBar';
-
-export const SpeakerContext = React.createContext({});
+import SpeakerContext from '../src/components/Speakers/SpeakerContext';
 
 function Page() {
     const speakers = [

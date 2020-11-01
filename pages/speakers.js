@@ -4,7 +4,6 @@ import Header from '../src/components/Header/Header';
 import Menu from '../src/components/Menu/Menu';
 import Speakers from '../src/components/Speakers/Speakers';
 import SpeakerSearchBar from '../src/components/SpeakerSearchBar/SpeakerSearchBar';
-import SpeakerContext from '../src/components/Speakers/SpeakerContext';
 
 function Page() {
     const speakers = [
@@ -23,10 +22,8 @@ function Page() {
         <div>
             <Header />
             <Menu />
-            <SpeakerContext.Provider value={speakers}>
-                <SpeakerSearchBar />
-                <Speakers />
-            </SpeakerContext.Provider>
+            <SpeakerSearchBar />
+            <Speakers />
             <Footer />
         </div>
     );

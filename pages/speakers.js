@@ -9,8 +9,10 @@ function Page() {
         <div>
             <Header />
             <Menu />
-            <SpeakerSearchBar />
-            <Speakers />
+            <>
+                <SpeakerSearchBar />
+                <Speakers />
+            </>
             <Footer />
         </div>
     );

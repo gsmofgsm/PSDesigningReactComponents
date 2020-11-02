@@ -5,7 +5,7 @@ import Speakers from '../src/components/Speakers/Speakers';
 function Page() {
     return (
         <Layout>
-            <Speakers bgColor='bg-gray-500' />
+            <Speakers />
         </Layout>
     );
 }

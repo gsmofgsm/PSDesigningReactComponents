@@ -7,6 +7,8 @@ import { REQUEST_STATUS } from '../../reducers/request';
 import withRequest from '../HOCs/withRequest';
 import withSpecialMessage from '../HOCs/withSpecialMessage';
 
+import { compose } from 'recompose';
+
 const Speakers = ({ records: speakers, status, error, put, bgColor, specialMessage }) => {
     function toggleSpeakerFavorite(speakerRec) {
       return {
@@ -68,5 +70,10 @@ const Speakers = ({ records: speakers, status, error, put, bgColor, specialMessa
     )
 };
 
-export default withSpecialMessage()(
-  withRequest('http://localhost:4000', 'speakers')(Speakers));
+// export default withSpecialMessage()(
+//   withRequest('http://localhost:4000', 'speakers')(Speakers));
+
+export default compose(
+  withRequest('http://localhost:4000', 'speakers'),
+  withSpecialMessage()
+)(Speakers);

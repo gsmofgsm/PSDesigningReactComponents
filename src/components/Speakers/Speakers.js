@@ -35,14 +35,20 @@ const Speakers = () => {
     };
 
     const reducer = (state, action) => {
-      return {
-        ...state,
-        speakers: action.speakers,
-      };
+      switch (action.type) {
+        case 'GET_ALL_SUCCESS':
+          return {
+            ...state,
+            speakers: action.speakers,
+          };
+        case 'UPDATE_STATUS':
+          return {
+            ...state,
+            status: action.status,
+          }
+      }
     };
-    const [{ speakers }, setSpeakers] = useReducer(reducer, []);
-
-    const [status, setStatus] = useState(REQUEST_STATUS.LOADING);
+    const [{ speakers, status }, setSpeakers] = useReducer(reducer, []);
     const [error, setError] = useState({});
 
     useEffect(() => {
@@ -53,9 +59,15 @@ const Speakers = () => {
             speakers: response.data,
             type: "GET_ALL_SUCCESS"
           });
-          setStatus(REQUEST_STATUS.SUCCESS);
+          setSpeakers({
+            status: REQUEST_STATUS.SUCCESS,
+            type: 'UPDATE_STATUS',
+          })
         } catch (e) {
-          setStatus(REQUEST_STATUS.ERROR);
+          setSpeakers({
+            status: REQUEST_STATUS.ERROR,
+            type: 'UPDATE_STATUS',
+          })
           setError(e);
         }
       }

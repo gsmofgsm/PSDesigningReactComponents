@@ -29,7 +29,7 @@ const requestReducer = (state, action) => {
             records: [
                 ...records.slice(0, recordIndex),
                 record,
-                ...record.slice(recordIndex + 1),
+                ...records.slice(recordIndex + 1),
             ],
         };
     case PUT_FAILURE:

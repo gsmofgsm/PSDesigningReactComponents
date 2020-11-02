@@ -29,7 +29,7 @@ const SpeakerComponent = ({ id, firstName, lastName, bio, isFavorite, put }) => 
 
 const Speaker = React.memo((props) => {
     return (
-        <ErrorBoundary>
+        <ErrorBoundary errorUI={<div>Something went Wrong in the Speaker Card</div>}>
             <SpeakerComponent {...props} />
         </ErrorBoundary>
     );

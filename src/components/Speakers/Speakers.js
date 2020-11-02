@@ -5,8 +5,9 @@ import SpeakerSearchBar from '../SpeakerSearchBar/SpeakerSearchBar';
 import { REQUEST_STATUS } from '../../reducers/request';
 
 import withRequest from '../HOCs/withRequest';
+import withSpecialMessage from '../HOCs/withSpecialMessage';
 
-const Speakers = ({ records: speakers, status, error, put, bgColor }) => {
+const Speakers = ({ records: speakers, status, error, put, bgColor, specialMessage }) => {
     function toggleSpeakerFavorite(speakerRec) {
       return {
         ...speakerRec,
@@ -31,6 +32,17 @@ const Speakers = ({ records: speakers, status, error, put, bgColor }) => {
         <div className={bgColor}>
             <SpeakerSearchBar searchQuery={searchQuery}
               setSearchQuery={setSearchQuery} />
+
+            {specialMessage && specialMessage.length > 0 && (
+              <div
+                className="bg-orange-100 border-l-8 border-orange-500 text-orange-700 p-4 text-2xl"
+                role="alert"
+              >
+                <p className="font-bold">Special Message</p>
+                <p>{specialMessage}</p>
+              </div>
+            )}
+
             {isLoading && <div>Loading...</div>}
             {hasErrored && (
               <div>
@@ -56,4 +68,5 @@ const Speakers = ({ records: speakers, status, error, put, bgColor }) => {
     )
 };
 
-export default withRequest('http://localhost:4000', 'speakers')(Speakers);
+export default withSpecialMessage()(
+  withRequest('http://localhost:4000', 'speakers')(Speakers));

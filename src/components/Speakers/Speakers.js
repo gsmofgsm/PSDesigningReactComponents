@@ -17,7 +17,7 @@ const Speakers = () => {
 
       try {
         await axios.put(`http://localhost:4000/speakers/${speakerRec.id}`, toggledSpeakerRec);
-        setSpeakers(
+        dispatch(
           [...speakers.slice(0, speakerIndex), toggledSpeakerRec, ...speakers.slice(speakerIndex + 1)]
         );
       } catch (e) {
@@ -48,23 +48,23 @@ const Speakers = () => {
           }
       }
     };
-    const [{ speakers, status }, setSpeakers] = useReducer(reducer, []);
+    const [{ speakers, status }, dispatch] = useReducer(reducer, []);
     const [error, setError] = useState({});
 
     useEffect(() => {
       const fetchData = async () => {
         try {
           const response = await axios.get("http://localhost:4000/speakers");
-          setSpeakers({
+          dispatch({
             speakers: response.data,
             type: "GET_ALL_SUCCESS"
           });
-          setSpeakers({
+          dispatch({
             status: REQUEST_STATUS.SUCCESS,
             type: 'UPDATE_STATUS',
           })
         } catch (e) {
-          setSpeakers({
+          dispatch({
             status: REQUEST_STATUS.ERROR,
             type: 'UPDATE_STATUS',
           })

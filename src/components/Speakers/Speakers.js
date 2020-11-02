@@ -48,7 +48,10 @@ const Speakers = () => {
           }
       }
     };
-    const [{ speakers, status }, dispatch] = useReducer(reducer, []);
+    const [{ speakers, status }, dispatch] = useReducer(reducer, {
+      status: REQUEST_STATUS.LOADING,
+      speakers: []
+    });
     const [error, setError] = useState({});
 
     useEffect(() => {

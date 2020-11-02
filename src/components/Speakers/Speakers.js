@@ -3,6 +3,9 @@ import axios from 'axios';
 import Speaker from '../Speaker/Speaker';
 import SpeakerSearchBar from '../SpeakerSearchBar/SpeakerSearchBar';
 
+import requestReducer, { REQUEST_STATUS } from '../../reducers/request';
+import {GET_ALL_SUCCESS, PUT_SUCCESS, PUT_FAILURE, GET_ALL_FAILURE} from '../../actions/request';
+
 const Speakers = () => {
     function toggleSpeakerFavorite(speakerRec) {
       return {
@@ -17,58 +20,40 @@ const Speakers = () => {
 
       try {
         await axios.put(`http://localhost:4000/speakers/${speakerRec.id}`, toggledSpeakerRec);
-        dispatch(
-          [...speakers.slice(0, speakerIndex), toggledSpeakerRec, ...speakers.slice(speakerIndex + 1)]
-        );
+        dispatch({
+          type: PUT_SUCCESS,
+          record: toggledSpeakerRec,
+        });
       } catch (e) {
-        setStatus(REQUEST_STATUS.ERROR);
-        setError(e);
+        dispatch({
+          type: PUT_FAILURE,
+          error: e,
+        })
       }
      }
 
     const [searchQuery, setSearchQuery] = useState("");
 
-    const REQUEST_STATUS = {
-      LOADING: 'loading',
-      SUCCESS: 'success',
-      ERROR: 'error',
-    };
-
-    const reducer = (state, action) => {
-      switch (action.type) {
-        case 'GET_ALL_SUCCESS':
-          return {
-            ...state,
-            status: REQUEST_STATUS.SUCCESS,
-            speakers: action.speakers,
-          };
-        case 'UPDATE_STATUS':
-          return {
-            ...state,
-            status: action.status,
-          }
-      }
-    };
-    const [{ speakers, status }, dispatch] = useReducer(reducer, {
+    
+    const [{ records: speakers, status, error }, dispatch] = useReducer(requestReducer, {
       status: REQUEST_STATUS.LOADING,
-      speakers: []
+      records: [],
+      error: null
     });
-    const [error, setError] = useState({});
 
     useEffect(() => {
       const fetchData = async () => {
         try {
           const response = await axios.get("http://localhost:4000/speakers");
           dispatch({
-            speakers: response.data,
-            type: "GET_ALL_SUCCESS"
+            records: response.data,
+            type: GET_ALL_SUCCESS
           });
         } catch (e) {
           dispatch({
-            status: REQUEST_STATUS.ERROR,
-            type: 'UPDATE_STATUS',
+            type: GET_ALL_FAILURE,
+            error: e,
           })
-          setError(e);
         }
       }
       fetchData();

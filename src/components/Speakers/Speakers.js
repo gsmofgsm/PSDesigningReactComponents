@@ -6,6 +6,8 @@ import SpeakerSearchBar from '../SpeakerSearchBar/SpeakerSearchBar';
 import requestReducer, { REQUEST_STATUS } from '../../reducers/request';
 import {GET_ALL_SUCCESS, PUT_SUCCESS, PUT_FAILURE, GET_ALL_FAILURE} from '../../actions/request';
 
+import withRequest from '../HOCs/withRequest';
+
 const Speakers = () => {
     function toggleSpeakerFavorite(speakerRec) {
       return {
@@ -92,4 +94,4 @@ const Speakers = () => {
     )
 };
 
-export default Speakers;
+export default withRequest()(Speakers);

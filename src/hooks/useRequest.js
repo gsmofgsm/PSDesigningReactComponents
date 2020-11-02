@@ -1,56 +1,63 @@
-import React, {useState, useEffect} from 'react';
+import React, {useReducer, useEffect} from 'react';
+import axios from 'axios';
+import requestReducer, { REQUEST_STATUS } from '../reducers/request';
 
-const useRequest = () => {
-    const speakers = [
-        {
-          id: 1530,
-          firstName: 'Tamara',
-          lastName: 'Baker',
-          sat: false,
-          sun: true,
-          isFavorite: true,
-          bio:
-            'Tammy has held a number of executive and management roles over the past 15 years, including VP engineering Roles at Molekule Inc., Cantaloupe Systems, E-Color, and Untangle Inc.',
-        },
-        {
-          id: 5996,
-          firstName: 'Craig',
-          lastName: 'Berntson',
-          isFavorite: false,
-          bio:
-            'Craig has a passion for community and helping other developers improve their skills. He writes the column "Software Gardening" in DotNet Curry Magazine and is the co-author of "Continuous Integration in .NET" available from Manning.',
-          sat: true,
-          sun: true,
-        },
-        {
-          id: 10803,
-          firstName: 'Eugene',
-          lastName: 'Chuvyrov',
-          sat: true,
-          sun: false,
-          isFavorite: true,
-          bio:
-            'Eugene Chuvyrov is  a Senior Cloud Architect at Microsoft. He works directly with both startups and enterprises to enable their solutions in Microsoft cloud, and to make Azure better as a result of this work with partners.',
-        },
-    ];
+import {
+    PUT_FAILURE,
+    PUT_SUCCESS,
+    GET_ALL_FAILURE,
+    GET_ALL_SUCCESS,
+} from '../actions/request';
 
-    const [state, setState] = useState({
-        speakers: speakers,
-        status: 'loading'
-    });
+const useRequest = (baseUrl, routeName) => {
+  const [{ records, status, error }, dispatch] = useReducer(requestReducer, {
+      status: REQUEST_STATUS.LOADING,
+      records: [],
+      error: null,
+  });
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setState({
-                speakers: speakers,
-                status: 'success',
-                error: undefined,
-            });
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, []);
+  useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const response = await axios.get(`${baseUrl}/${routeName}`);
 
-    return state;
+              dispatch({
+                  type: GET_ALL_SUCCESS,
+                  records: response.data,
+              });
+          } catch (e) {
+              console.log('Loading data error', e);
+
+              dispatch({
+                  type: GET_ALL_FAILURE,
+                  error: e,
+              });
+          }
+      };
+      fetchData();
+  }, [baseUrl, routeName]);
+
+  const propsLocal = {
+      records,
+      status,
+      error,
+      put: async (record) => {
+          try {
+              await axios.put(`${baseUrl}/${routeName}/${record.id}`, record);
+              dispatch({
+                  type: PUT_SUCCESS,
+                  record: record,
+              });
+          } catch (e) {
+              dispatch({
+                  type: PUT_FAILURE,
+                  error: e,
+              });
+          }
+       },
+  };
+
+  return propsLocal;
 };
 
 export default useRequest;

@@ -34,8 +34,13 @@ const Speakers = () => {
       ERROR: 'error',
     };
 
-    const reducer = (state, action) => action;
-    const [speakers, setSpeakers] = useReducer(reducer, []);
+    const reducer = (state, action) => {
+      return {
+        ...state,
+        speakers: action.speakers,
+      };
+    };
+    const [{ speakers }, setSpeakers] = useReducer(reducer, []);
 
     const [status, setStatus] = useState(REQUEST_STATUS.LOADING);
     const [error, setError] = useState({});
@@ -44,7 +49,10 @@ const Speakers = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get("http://localhost:4000/speakers");
-          setSpeakers(response.data);
+          setSpeakers({
+            speakers: response.data,
+            type: "GET_ALL_SUCCESS"
+          });
           setStatus(REQUEST_STATUS.SUCCESS);
         } catch (e) {
           setStatus(REQUEST_STATUS.ERROR);

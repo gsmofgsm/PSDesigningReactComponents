@@ -39,6 +39,7 @@ const Speakers = () => {
         case 'GET_ALL_SUCCESS':
           return {
             ...state,
+            status: REQUEST_STATUS.SUCCESS,
             speakers: action.speakers,
           };
         case 'UPDATE_STATUS':
@@ -62,10 +63,6 @@ const Speakers = () => {
             speakers: response.data,
             type: "GET_ALL_SUCCESS"
           });
-          dispatch({
-            status: REQUEST_STATUS.SUCCESS,
-            type: 'UPDATE_STATUS',
-          })
         } catch (e) {
           dispatch({
             status: REQUEST_STATUS.ERROR,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import Speaker from '../Speaker/Speaker';
 import SpeakerSearchBar from '../SpeakerSearchBar/SpeakerSearchBar';
@@ -27,13 +27,15 @@ const Speakers = () => {
      }
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [speakers, setSpeakers] = useState([]);
 
     const REQUEST_STATUS = {
       LOADING: 'loading',
       SUCCESS: 'success',
       ERROR: 'error',
     };
+
+    const reducer = (state, action) => action;
+    const [speakers, setSpeakers] = useReducer(reducer, []);
 
     const [status, setStatus] = useState(REQUEST_STATUS.LOADING);
     const [error, setError] = useState({});

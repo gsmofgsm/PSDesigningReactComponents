@@ -1,4 +1,4 @@
-import {GET_ALL_SUCCESS, PUT_SUCCESS, PUT_FAILURE, GET_ALL_FAILURE} from '../actions/request';
+import {GET_ALL_SUCCESS, PUT_SUCCESS, PUT_FAILURE, GET_ALL_FAILURE, PUT} from '../actions/request';
 
 export const REQUEST_STATUS = {
     LOADING: 'loading',
@@ -20,24 +20,28 @@ const requestReducer = (state, action) => {
             status: REQUEST_STATUS.ERROR,
             error: action.error,
         }
-    case PUT_SUCCESS:
+    case PUT:
         const { records } = state;
         const { record } = action;
         const recordIndex = records.map((rec) => rec.id).indexOf(record.id);
         return {
             ...state,
+            prevRecords: state.records,
             records: [
                 ...records.slice(0, recordIndex),
                 record,
                 ...records.slice(recordIndex + 1),
             ],
         };
+    case PUT_SUCCESS:
+        return state;
     case PUT_FAILURE:
         console.log(
             'PUT_FAILURE: Currently just logging to console without refreshing records'
         );
         return {
             ...state,
+            records: state.prevRecords,
             error: action.error,
         }
     default:
